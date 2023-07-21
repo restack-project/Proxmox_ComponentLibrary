@@ -1,5 +1,5 @@
 {
-    "name": "ReStack_ComponentLibrary",
+    "name": "Proxmox_ComponentLibrary",
     "codeowners": ["@bramvandenbossche" ],
     "documentation": "https://www.to.do",
     "version": "0.0.1",
