@@ -28,4 +28,4 @@ update() {
 
 # Run
 update
-end_script 0
+exit 0
