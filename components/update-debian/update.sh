@@ -15,6 +15,7 @@ execute_command_on_machine() {
     output=$(ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$USER"@"$PROXMOX_HOST" "pct exec $VM_CT_ID -- bash -c \"$command\" 2>&1")
   fi
 
+  echo "$output"
   local exit_status=$?
 
   if [[ $exit_status -ne 0 ]]; then

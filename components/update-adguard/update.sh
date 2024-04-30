@@ -12,6 +12,8 @@ execute_command_on_container() {
 
   pct_exec_output=$(ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$USER"@"$PROXMOX_HOST" "pct exec $VM_CT_ID -- bash -c '$command' 2>&1")
   local exit_status=$?
+  
+  echo "$pct_exec_output"
 
   if [[ $exit_status -ne 0 ]]; then
     >&2 echo  "Error executing command on container ($exit_status): $command"
@@ -23,7 +25,7 @@ update() {
   check_output=$(execute_command_on_container "[ -d /opt/AdGuardHome ] && echo 'Installed' || echo 'NotInstalled'")
   if [[ $check_output == "NotInstalled" ]]; then
     >&2 echo  "No AdGuardHome Installation Found!"
-    end_script 1
+    exit 1
   fi
 
   echo "Downloading AdGuardHome"

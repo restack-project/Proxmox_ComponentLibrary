@@ -6,57 +6,34 @@ PROXMOX_HOST="$2"
 USER="$3"
 SSH_PRIVATE_KEY="${4:-id_rsa}"
 
-## Vars
-messages=()
-
-echo_message() {
-  local message="$1"
-  local error="$2"
-  local componentname="update-technitium"
-  local timestamp=$(date -u +"%Y-%m-%dT%H:%M:%S.%3NZ")
-
-  echo '{"timestamp": "'"$timestamp"'","componentName": "'"$componentname"'","message": "'"$message"'","error": '$error'}'
-}
-
-end_script() {
-  local status="$1"
-
-  for ((i=0; i<${#messages[@]}; i++)); do
-    echo "${messages[i]}"
-  done
-  
-  exit $status
-}
-
+#Functions
 execute_command_on_container() {
   local command="$1"
 
   pct_exec_output=$(ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$USER"@"$PROXMOX_HOST" "pct exec $VM_CT_ID -- bash -c '$command' 2>&1")
   local exit_status=$?
+  
+  echo "$pct_exec_output"
 
   if [[ $exit_status -ne 0 ]]; then
-    messages+=("$(echo_message "Error executing command on container ($exit_status): $command" true)")
-    end_script 1
-  else
-    while IFS= read -r line; do
-      messages+=("$(echo_message "$line" false)")
-    done <<< "$pct_exec_output"
+    >&2 echo  "Error executing command on container ($exit_status): $command"
+    exit 1
   fi
 }
 
 update() {
   check_output=$(execute_command_on_container "[ -d /etc/dns ] && echo 'Installed' || echo 'NotInstalled'")
   if [[ $check_output == "NotInstalled" ]]; then
-    messages+=("$(echo_message "No Technitium Installation Found!" true)")
-    end_script 1
+    >&2 echo "No Technitium Installation Found!"
+    exit 1
   fi
 
-  messages+=("$(echo_message "Updating Technitium" false)")
+  echo "Updating Technitium"
 
   check_output=$(execute_command_on_container "dpkg -s aspnetcore-runtime-7.0 > /dev/null 2>&1; echo \$?")
   if [[ $check_output -ne 0 ]]; then
-    messages+=("$(echo_message "Package aspnetcore-runtime-7.0 Not Installed!" true)")
-    end_script 1
+    >&2 echo "Package aspnetcore-runtime-7.0 Not Installed!"
+    exit 1
   fi
 
   execute_command_on_container "wget -q https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb"
@@ -67,9 +44,9 @@ update() {
 
   execute_command_on_container "bash <(curl -fsSL https://download.technitium.com/dns/install.sh) &>/dev/null"
 
-  messages+=("$(echo_message "Updated Successfully" false)")
+  echo "Updated Successfully"
 }
 
 ## Run
 update
-end_script 0
+exit 0

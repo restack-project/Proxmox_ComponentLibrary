@@ -34,7 +34,7 @@ if [[ $ssh_exit_status -ne 0 ]]; then
     >&2 echo "Failed to execute vzdump command over SSH. Error: $ssh_output"
     exit 1
 else
-    >&2 echo "vzdump command executed successfully."
+    echo "vzdump command executed successfully."
 fi
 
 exit 0

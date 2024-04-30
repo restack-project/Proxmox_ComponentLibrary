@@ -47,7 +47,7 @@ if [[ $exit_status -ne 0 ]]; then
     >&2 echo "No backup found ($exit_status): $command"
     exit 1
 else
-    >&2 echo "Restoring $backup_entry"
+    echo "Restoring $backup_entry"
 fi
 
 vmct_status=$(ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$USER"@"$PROXMOX_HOST" "pct status $VM_CT_ID 2>&1")
@@ -58,7 +58,7 @@ if [[ $vmct_status != "status: stopped" ]]; then
         >&2 echo "Failed to stop the container/VM. Error: $stopctvm_output"
         exit 1
     else
-        >&2 echo  "Container/VM stopped successfully."
+        echo  "Container/VM stopped successfully."
     fi
 fi
 
@@ -68,7 +68,7 @@ if [[ $exit_status -ne 0 ]]; then
     >&2 echo "Failed to restore container/VM. Error: $restore_output"
     exit 1
 else
-    >&2 echo "Container/VM restored successfully."
+    echo "Container/VM restored successfully."
 fi
 
 startctvm_output=$(ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$USER"@"$PROXMOX_HOST" "$START_CMD $VM_CT_ID 2>&1")
@@ -77,7 +77,7 @@ if [[ $exit_status -ne 0 ]]; then
     >&2 echo "Failed to started container/VM. Error: $startctvm_output"
     exit 1
 else
-    >&2 echo " Container/VM started successfully."
+    echo " Container/VM started successfully."
 fi
 
 exit 0
