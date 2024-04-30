@@ -16,8 +16,8 @@ execute_command_on_machine() {
   fi
 
   echo "$output"
-  local exit_status=$?
 
+  local exit_status=$?
   if [[ $exit_status -ne 0 ]]; then
     >&2 echo "Error executing command on machine ($exit_status): $command"
     exit 1

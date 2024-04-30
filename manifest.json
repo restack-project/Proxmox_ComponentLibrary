@@ -1,6 +1,6 @@
 {
     "name": "Proxmox_ComponentLibrary",
-    "codeowners": ["@bramvandenbossche" ],
+    "codeowners": ["@restack-project" ],
     "documentation": "https://www.to.do",
     "version": "0.0.3",
     "type": "shell"
