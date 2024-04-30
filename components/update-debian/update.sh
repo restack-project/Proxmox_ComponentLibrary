@@ -4,7 +4,8 @@
 VM_CT_ID="$1"          
 PROXMOX_HOST="$2"  
 USER="$3"
-SSH_PRIVATE_KEY="${4:-id_rsa}"
+DIST_UPGRADE="$4"
+SSH_PRIVATE_KEY="${5:-id_rsa}"
 
 execute_command_on_machine() {
   local command="$1"
@@ -27,7 +28,13 @@ execute_command_on_machine() {
 
 update() {
   execute_command_on_machine "apt-get update"
-  execute_command_on_machine "apt-get upgrade -y"
+
+  if [[ $DIST_UPGRADE == true ]]; then
+   execute_command_on_machine "apt-get dist-upgrade -y"
+  else
+    execute_command_on_machine "apt-get upgrade -y"
+  if
+
 }
 
 ## Run
