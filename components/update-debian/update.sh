@@ -33,7 +33,7 @@ update() {
    execute_command_on_machine "apt-get dist-upgrade -y"
   else
     execute_command_on_machine "apt-get upgrade -y"
-  if
+  fi
 
 }
 
