@@ -27,9 +27,7 @@ execute_command_on_machine() {
 
 update() {
   execute_command_on_machine "apt-get update"
-  echo "Updated Successfully"
   execute_command_on_machine "apt-get upgrade -y"
-  echo "Upgraded Successfully"
 }
 
 ## Run

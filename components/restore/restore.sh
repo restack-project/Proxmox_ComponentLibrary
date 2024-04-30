@@ -74,7 +74,7 @@ fi
 startctvm_output=$(ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$USER"@"$PROXMOX_HOST" "$START_CMD $VM_CT_ID 2>&1")
 exit_status=$?
 if [[ $exit_status -ne 0 ]]; then
-    >&2 echo "Failed to started container/VM. Error: $startctvm_output"
+    >&2 echo "Failed to start container/VM. Error: $startctvm_output"
     exit 1
 else
     echo " Container/VM started successfully."

@@ -36,7 +36,7 @@ update() {
   echo "Stopped AdguardHome"
 
   echo "Updating AdguardHome"
-  execute_command_on_container "tar -xvf AdGuardHome_linux_amd64.tar.gz &>/dev/null"
+  execute_command_on_container "tar -xvf AdGuardHome_linux_amd64.tar.gz"
   execute_command_on_container "mkdir -p adguard-backup"
   execute_command_on_container "cp -r /opt/AdGuardHome/AdGuardHome.yaml /opt/AdGuardHome/data adguard-backup/"
   execute_command_on_container "cp AdGuardHome/AdGuardHome /opt/AdGuardHome/AdGuardHome"

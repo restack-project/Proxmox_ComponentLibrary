@@ -37,14 +37,12 @@ update() {
   fi
 
   execute_command_on_container "wget -q https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb"
-  execute_command_on_container "dpkg -i packages-microsoft-prod.deb &>/dev/null"
-  execute_command_on_container "apt-get update &>/dev/null"
-  execute_command_on_container "apt-get install -y aspnetcore-runtime-7.0 &>/dev/null"
+  execute_command_on_container "dpkg -i packages-microsoft-prod.deb"
+  execute_command_on_container "apt-get update"
+  execute_command_on_container "apt-get install -y aspnetcore-runtime-7.0"
   execute_command_on_container "rm packages-microsoft-prod.deb"
 
-  execute_command_on_container "bash <(curl -fsSL https://download.technitium.com/dns/install.sh) &>/dev/null"
-
-  echo "Updated Successfully"
+  execute_command_on_container "bash <(curl -fsSL https://download.technitium.com/dns/install.sh)"
 }
 
 ## Run

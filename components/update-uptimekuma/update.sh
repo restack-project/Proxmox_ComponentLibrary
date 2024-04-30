@@ -33,25 +33,20 @@ update() {
 
   LATEST=$(curl -sL https://api.github.com/repos/louislam/uptime-kuma/releases/latest | grep '"tag_name":' | cut -d'"' -f4)
   echo "Stopping Kuma"
-  execute_command_on_container "sudo systemctl stop uptime-kuma &>/dev/null"
-  echo "Stopped Kuma"
+  execute_command_on_container "sudo systemctl stop uptime-kuma"
 
   execute_command_on_container "cd /opt/uptime-kuma && \
-                                git fetch --all &>/dev/null && \
-                                git checkout $LATEST --force &>/dev/null"
+                                git fetch --all && \
+                                git checkout $LATEST --force"
   
-  echo "Pulled ${LATEST}"
 
   echo "Updating Kuma to ${LATEST}"
   execute_command_on_container "cd /opt/uptime-kuma && \
-                                npm install --production &>/dev/null && \
-                                npm run download-dist &>/dev/null"
-  echo "Updated"
+                                npm install --production && \
+                                npm run download-dist"
   
   echo "Starting Kuma"
-  execute_command_on_container "sudo systemctl start uptime-kuma &>/dev/null"
-  echo "Started"
-  echo "Updated Successfully"
+  execute_command_on_container "sudo systemctl start uptime-kuma"
 }
 
 ## Run

@@ -24,7 +24,6 @@ execute_command_on_container() {
 update() {
   echo "Updating Cloudpanel"
   execute_command_on_container "clp-update"
-  echo "Updated Successfully"
 }
 
 # Run
