@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # Parameters
-VM_CT_ID="$1"
-PROXMOX_HOST="$2"
+VM_CT_ID="$1"          
+PROXMOX_HOST="$2"  
 USER="$3"
-SSH_PRIVATE_KEY="${4:-id_rsa}"
+DIST_UPGRADE="$4"
+SSH_PRIVATE_KEY="${5:-id_rsa}"
 
-# Functions
 execute_command_on_machine() {
   local command="$1"
 
@@ -25,11 +25,18 @@ execute_command_on_machine() {
   fi
 }
 
+
 update() {
-  echo "Updating Cloudpanel"
-  execute_command_on_machine "clp-update"
+  execute_command_on_machine "apt-get update"
+
+  if [[ $DIST_UPGRADE == true ]]; then
+   execute_command_on_machine "apk update"
+  else
+    execute_command_on_machine "apk upgrade
+  fi
+
 }
 
-# Run
+## Run
 update
 exit 0
