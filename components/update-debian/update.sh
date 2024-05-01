@@ -28,13 +28,11 @@ execute_command_on_machine() {
 
 update() {
   execute_command_on_machine "apt-get update"
-
   if [[ $DIST_UPGRADE == true ]]; then
-   execute_command_on_machine "apt-get dist-upgrade -y"
+    execute_command_on_machine "apt-get dist-upgrade -y"
   else
     execute_command_on_machine "apt-get upgrade -y"
   fi
-
 }
 
 ## Run
