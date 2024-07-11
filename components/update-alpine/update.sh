@@ -32,7 +32,7 @@ update() {
   if [[ $DIST_UPGRADE == true ]]; then
    execute_command_on_machine "apk update"
   else
-    execute_command_on_machine "apk upgrade
+    execute_command_on_machine "apk upgrade"
   fi
 
 }
