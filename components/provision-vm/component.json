@@ -2,18 +2,68 @@
     "name": "provision-vm",
     "version": "1.0.0",
     "description": "Provisions a new VM in Proxmox using cloud-init",
-    "parameters": {
-        "vm_id": "ID for the new VM",
-        "name": "Name of the VM",
-        "memory": "Memory in MB",
-        "cores": "Number of CPU cores",
-        "storage": "Storage pool name",
-        "network": "Network bridge",
-        "cloud_init_image": "Path to cloud-init image",
-        "ssh_key": "SSH public key for cloud-init",
-        "proxmox_host": "Proxmox host to create VM on",
-        "user": "SSH user for Proxmox host"
-    },
+    "parameters": [
+        {
+            "name": "vm_id",
+            "description": "ID for the new VM",
+            "type": "number",
+            "required": true
+        },
+        {
+            "name": "name",
+            "description": "Name of the VM",
+            "type": "string",
+            "required": true
+        },
+        {
+            "name": "memory",
+            "description": "Memory in MB",
+            "type": "number",
+            "required": true
+        },
+        {
+            "name": "cores",
+            "description": "Number of CPU cores",
+            "type": "number",
+            "required": true
+        },
+        {
+            "name": "storage",
+            "description": "Storage pool name",
+            "type": "string",
+            "required": true
+        },
+        {
+            "name": "network",
+            "description": "Network bridge",
+            "type": "string",
+            "required": true
+        },
+        {
+            "name": "cloud_init_image",
+            "description": "Path to cloud-init image",
+            "type": "string",
+            "required": true
+        },
+        {
+            "name": "ssh_key",
+            "description": "SSH public key for cloud-init",
+            "type": "string",
+            "required": true
+        },
+        {
+            "name": "proxmox_host",
+            "description": "Proxmox host to create VM on",
+            "type": "string",
+            "required": true
+        },
+        {
+            "name": "user",
+            "description": "SSH user for Proxmox host",
+            "type": "string",
+            "required": true
+        }
+    ],
     "dependencies": ["qm", "cloud-init"],
     "example": "./provision-vm.sh 100 ubuntu-test 2048 2 local-lvm vmbr0 ubuntu-22.04-cloudimg.img ~/.ssh/id_rsa.pub 192.168.1.1 root"
 }
