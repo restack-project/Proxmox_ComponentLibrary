@@ -2,6 +2,6 @@
     "name": "Proxmox_ComponentLibrary",
     "codeowners": ["@restack-project" ],
     "documentation": "https://www.to.do",
-    "version": "0.0.3",
+    "version": "2025.07.24",
     "type": "shell"
 }
