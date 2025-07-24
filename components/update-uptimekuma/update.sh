@@ -1,33 +1,19 @@
 #!/usr/bin/env bash
 
-# Parameters
+source "$(dirname "$0")/../../lib/common.sh"
+
 VM_CT_ID="$1"
 PROXMOX_HOST="$2"
 USER="$3"
 SSH_PRIVATE_KEY="${4:-id_rsa}"
 
-# Vars
+[[ -z $VM_CT_ID ]] && log_error "Please provide the VM or CT ID."
+[[ -z $PROXMOX_HOST ]] && log_error "Please specify the Proxmox host."
+[[ -z $USER ]] && log_error "Please specify the user."
+
+validate_ssh_key "$SSH_PRIVATE_KEY" || exit 1
+
 messages=()
-
-# Functions
-execute_command_on_machine() {
-  local command="$1"
-
-  if [[ $VM_CT_ID == "0" || $VM_CT_ID -eq 0 ]]; then
-    output=$(ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$USER"@"$PROXMOX_HOST" "bash -c '$command' 2>&1")
-  else
-    output=$(ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no "$USER"@"$PROXMOX_HOST" "pct exec $VM_CT_ID -- bash -c \"$command\" 2>&1")
-  fi
-
-  echo "$output"
-
-  local exit_status=$?
-  if [[ $exit_status -ne 0 ]]; then
-    >&2 echo "Error executing command on machine ($exit_status): $command"
-    exit 1
-  fi
-}
-
 
 update() {
   check_output=$(execute_command_on_machine "[ -d /opt/uptime-kuma ] && echo 'Installed' || echo 'NotInstalled'")

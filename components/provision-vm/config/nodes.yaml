@@ -1,0 +1,11 @@
+nodes:
+  - name: k3s-node-1
+    vmid: 307
+    cpu: 4
+    ram: 20480
+    disk: 64G
+    template_id: 9000
+    ciuser: user
+    cipassword: changeme123
+    sshkey_path: ~/.ssh/id_rsa.pub
+    target_storage: VmStorage

@@ -1,0 +1,19 @@
+{
+    "name": "provision-vm",
+    "version": "1.0.0",
+    "description": "Provisions a new VM in Proxmox using cloud-init",
+    "parameters": {
+        "vm_id": "ID for the new VM",
+        "name": "Name of the VM",
+        "memory": "Memory in MB",
+        "cores": "Number of CPU cores",
+        "storage": "Storage pool name",
+        "network": "Network bridge",
+        "cloud_init_image": "Path to cloud-init image",
+        "ssh_key": "SSH public key for cloud-init",
+        "proxmox_host": "Proxmox host to create VM on",
+        "user": "SSH user for Proxmox host"
+    },
+    "dependencies": ["qm", "cloud-init"],
+    "example": "./provision-vm.sh 100 ubuntu-test 2048 2 local-lvm vmbr0 ubuntu-22.04-cloudimg.img ~/.ssh/id_rsa.pub 192.168.1.1 root"
+}

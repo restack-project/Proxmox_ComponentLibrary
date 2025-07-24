@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Parameters
+source "$(dirname "$0")/../../lib/common.sh"
+
 VM_CT_ID="$1"                
 PBS_STORAGE="$2"             
 TARGET_STORAGE="$3"     
@@ -8,7 +9,13 @@ PROXMOX_HOST="$4"
 USER="$5"
 SSH_PRIVATE_KEY="${6:-id_rsa}"
 
-# Vars
+[[ -z $VM_CT_ID ]] && log_error "Please provide the VM or CT ID."
+[[ -z $PBS_STORAGE ]] && log_error "Please specify the PBS storage name."
+[[ -z $TARGET_STORAGE ]] && log_error "Please specify the target storage."
+[[ -z $PROXMOX_HOST ]] && log_error "Please specify the Proxmox host."
+[[ -z $USER ]] && log_error "Please specify the user."
+
+validate_ssh_key "$SSH_PRIVATE_KEY" || exit 1
 if [[ $VM_CT_ID =~ ^q ]]; then
     RESTORE_CMD="qmrestore"
     STOP_CMD="qm stop"
@@ -19,15 +26,7 @@ else
     START_CMD="pct start"
 fi        
 
-
-# Run
-if [[ -z $VM_CT_ID ]]; then
-    >&2 echo  "Please provide the VM or CT ID."
-    exit 1
-fi
-
-if [[ -z $PBS_STORAGE ]]; then
-    >&2 echo  "Please specify the PBS storage name."
+log_info "Starting restore process for VM/CT $VM_CT_ID"
     exit 1
 fi
 

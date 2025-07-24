@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Import common library
+source "$(dirname "$0")/../../lib/common.sh"
+
 # Parameters
 VM_CT_ID="$1"                
 PBS_STORAGE="$2"             
@@ -7,26 +10,16 @@ PROXMOX_HOST="$3"
 USER="$4"
 SSH_PRIVATE_KEY="${5:-id_rsa}"
 
-# Run
-if [[ -z $VM_CT_ID ]]; then
-    >&2 echo "Please provide the VM or CT ID."
-    exit 1
-fi
+# Validate parameters
+[[ -z $VM_CT_ID ]] && log_error "Please provide the VM or CT ID."
+[[ -z $PBS_STORAGE ]] && log_error "Please specify the PBS storage name."
+[[ -z $SSH_PRIVATE_KEY ]] && log_error "Please provide the SSH private key file name."
+[[ -z $PROXMOX_HOST ]] && log_error "Please specify the Proxmox host IP address or hostname."
 
-if [[ -z $PBS_STORAGE ]]; then
-    >&2 echo "Please specify the PBS storage name."
-    exit 1
-fi
+# Validate SSH key
+validate_ssh_key "$SSH_PRIVATE_KEY" || exit 1
 
-if [[ -z $SSH_PRIVATE_KEY ]]; then
-    >&2 echo "Please provide the SSH private key file name.${NC}"
-    exit 1
-fi
-
-if [[ -z $PROXMOX_HOST ]]; then
-    >&2 echo "Please specify the Proxmox host IP address or hostname."
-    exit 1
-fi
+# Execute backup command
 
 ssh_output=$(ssh -i "$SSH_PRIVATE_KEY" "$USER"@"$PROXMOX_HOST" "vzdump $VM_CT_ID --storage=\"$PBS_STORAGE\"" 2>&1)
 ssh_exit_status=$?
