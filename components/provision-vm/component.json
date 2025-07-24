@@ -66,4 +66,4 @@
     ],
     "dependencies": ["qm", "cloud-init"],
     "example": "./provision-vm.sh 100 ubuntu-test 2048 2 local-lvm vmbr0 ubuntu-22.04-cloudimg.img ~/.ssh/id_rsa.pub 192.168.1.1 root"
-}
+}   
