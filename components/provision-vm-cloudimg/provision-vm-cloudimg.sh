@@ -1,8 +1,41 @@
 #!/bin/bash
 
-# Get the real path of this script to properly locate the common library
+# Load common library using universal loader
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/../../lib/common.sh"
+
+# Try multiple paths to find the loader
+LOADER_PATHS=(
+    "$SCRIPT_DIR/../../lib/loader.sh"
+    "$SCRIPT_DIR/../../../lib/loader.sh"
+)
+
+for loader_path in "${LOADER_PATHS[@]}"; do
+    if [[ -f "$loader_path" ]]; then
+        source "$loader_path"
+        break
+    fi
+done
+
+# Fallback: try to load common library directly if loader not found
+if ! command -v log_info &> /dev/null; then
+    COMMON_LIB_PATHS=(
+        "$SCRIPT_DIR/../../lib/common.sh"
+        "$SCRIPT_DIR/../../../lib/common.sh"
+    )
+    
+    for lib_path in "${COMMON_LIB_PATHS[@]}"; do
+        if [[ -f "$lib_path" ]]; then
+            source "$lib_path"
+            break
+        fi
+    done
+fi
+
+# Final check
+if ! command -v log_info &> /dev/null; then
+    echo "ERROR: Could not load common library functions" >&2
+    exit 1
+fi
 
 VM_ID="$1"
 VM_NAME="$2"
