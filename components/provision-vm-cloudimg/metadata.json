@@ -1,0 +1,76 @@
+{
+    "name": "provision-vm-cloudimg",
+    "version": "1.0.0",
+    "description": "Provisions a new VM in Proxmox using cloud-init images with auto-download support",
+    "file": "provision-vm-cloudimg.sh",
+    "parameters": [
+        {
+            "name": "vm_id",
+            "description": "ID for the new VM",
+            "datatype": "Number",
+            "required": true
+        },
+        {
+            "name": "name",
+            "description": "Name of the VM",
+            "datatype": "Text",
+            "required": true
+        },
+        {
+            "name": "memory",
+            "description": "Memory in MB",
+            "datatype": "Number",
+            "required": true
+        },
+        {
+            "name": "cores",
+            "description": "Number of CPU cores",
+            "datatype": "Number",
+            "required": true
+        },
+        {
+            "name": "storage",
+            "description": "Storage pool name",
+            "datatype": "Text",
+            "required": true
+        },
+        {
+            "name": "network",
+            "description": "Network bridge",
+            "datatype": "Text",
+            "required": true
+        },
+        {
+            "name": "os_type",
+            "description": "OS type: 'debian', 'fedora', or 'custom:/path/to/image'",
+            "datatype": "Text",
+            "required": true
+        },
+        {
+            "name": "ssh_key",
+            "description": "SSH public key file path",
+            "datatype": "Text",
+            "required": true
+        },
+        {
+            "name": "proxmox_host",
+            "description": "Proxmox host to create VM on",
+            "datatype": "Text",
+            "required": true
+        },
+        {
+            "name": "user",
+            "description": "SSH user for Proxmox host",
+            "datatype": "Text",
+            "required": true
+        },
+        {
+            "name": "ssh_private_key",
+            "description": "SSH private key file path",
+            "datatype": "Text",
+            "required": true
+        }
+    ],
+    "dependencies": ["qm", "cloud-init", "wget", "curl"],
+    "example": "./provision-vm-cloudimg.sh 100 ubuntu-test 2048 2 local-lvm vmbr0 debian ~/.ssh/id_rsa.pub 192.168.1.1 root ~/.ssh/id_rsa"
+}
