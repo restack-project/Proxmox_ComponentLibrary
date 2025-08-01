@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source "$(dirname "$0")/../../lib/common.sh"
+# Get the real path of this script to properly locate the common library
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../../lib/common.sh"
 
 VM_ID="$1"
 VM_NAME="$2"

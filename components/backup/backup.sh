@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Import common library
-source "$(dirname "$0")/../../lib/common.sh"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../../lib/common.sh"
 
 # Parameters
 VM_CT_ID="$1"                
